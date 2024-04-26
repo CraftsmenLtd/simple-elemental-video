@@ -6,6 +6,7 @@
 lambda_zip_dir
 lambda_zip_file.zip
 lambda_python_layer_dir
+lambda_python_layer_file
 .terraform*
 terraform.tfstate*
 
