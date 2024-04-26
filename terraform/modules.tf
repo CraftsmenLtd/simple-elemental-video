@@ -17,3 +17,27 @@ module "mediapackage" {
   source = "./mediapackage"
   prefix = var.prefix
 }
+
+module "api-gateway" {
+  source = "./commons/api_gateway_base"
+  prefix = var.prefix
+  api_stage = var.prefix
+}
+
+module "harvest" {
+  source = "./harvest"
+  prefix = var.prefix
+  api_gw_rest_api_id = module.api-gateway.api_gw_rest_api_id
+  api_gw_root_resource_id = module.api-gateway.api_gw_root_resource_id
+}
+
+resource "aws_api_gateway_deployment" "api_deployment" {
+  rest_api_id = module.api-gateway.api_gw_rest_api_id
+  stage_name  = var.prefix
+
+  depends_on = [module.harvest]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}

@@ -3,6 +3,9 @@
 .idea
 
 # Terraform
+lambda_zip_dir
+lambda_zip_file.zip
+lambda_python_layer_dir
 .terraform*
 terraform.tfstate*
 
