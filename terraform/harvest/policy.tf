@@ -30,4 +30,33 @@ data "aws_iam_policy_document" "lambda_common_policy" {
   }
 }
 
+data "aws_iam_policy_document" "harvest_assume_role_policy" {
+  version = "2012-10-17"
 
+  statement {
+    sid     = "HarvestAssume"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["mediapackage.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "harvest_policy" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "HarvestPolicy"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:PutObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.harvest_bucket.arn
+    ]
+  }
+}

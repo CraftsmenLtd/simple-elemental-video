@@ -8,7 +8,7 @@ locals {
       source_directory = "${path.module}/../../harvest/l2v_harvest"
       handler  = "handler.handler"
       env_variables = {
-        foo = "bar"
+        harvest_role_arn = aws_iam_role.harvest_role.arn
       }
     }
   }
