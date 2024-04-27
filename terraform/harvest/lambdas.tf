@@ -1,12 +1,12 @@
 locals {
-  lambda_runtime            = "python3.8"
-  lambda_artifact_dir       = "${path.module}/lambda_zip_dir"
+  lambda_runtime      = "python3.8"
+  lambda_artifact_dir = "${path.module}/lambda_zip_dir"
   lambda_options = {
     l2v-harvest = {
-      name     = "l2v-harvest"
-      policy   = data.aws_iam_policy_document.lambda_common_policy
+      name             = "l2v-harvest"
+      policy           = data.aws_iam_policy_document.lambda_common_policy
       source_directory = "${path.module}/../../harvest/l2v_harvest"
-      handler  = "handler.handler"
+      handler          = "handler.handler"
       env_variables = {
         harvest_role_arn = aws_iam_role.harvest_role.arn
       }
@@ -23,9 +23,9 @@ data "archive_file" "lambda_zip_files" {
 }
 
 module "lambda_layer" {
-  source = "./../commons/lambda_python_layer"
-  lambda_python_runtime = local.lambda_runtime
-  prefix = var.prefix
+  source                 = "./../commons/lambda_python_layer"
+  lambda_python_runtime  = local.lambda_runtime
+  prefix                 = var.prefix
   requirements_file_path = abspath("${path.module}/../../harvest/requirements.txt")
 }
 

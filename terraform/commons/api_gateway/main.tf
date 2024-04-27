@@ -7,7 +7,7 @@ resource "aws_api_gateway_resource" "api_path" {
 }
 
 resource "aws_api_gateway_request_validator" "api_gw_validator" {
-  name                        = "example"
+  name                        = "${var.prefix}-api-gw-validator"
   rest_api_id                 = var.rest_api_id
   validate_request_body       = true
   validate_request_parameters = true

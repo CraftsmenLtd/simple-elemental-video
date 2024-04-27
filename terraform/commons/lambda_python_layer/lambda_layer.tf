@@ -1,7 +1,7 @@
 locals {
   lambda_artifact_dir       = "${path.module}/lambda_python_layer_dir"
   lambda_layer_zipfile_name = "lambda_python_layer_file"
-  lambda_layer_zip_path = "${local.lambda_artifact_dir}/${local.lambda_layer_zipfile_name}.zip"
+  lambda_layer_zip_path     = "${local.lambda_artifact_dir}/${local.lambda_layer_zipfile_name}.zip"
 }
 
 resource "null_resource" "build_lambda_layer" {
@@ -10,9 +10,9 @@ resource "null_resource" "build_lambda_layer" {
     command = "${path.module}/build_layer.sh"
 
     environment = {
-      ARTIFACT_DIR = abspath(local.lambda_artifact_dir)
-      REQUIREMENTS_PATH   = var.requirements_file_path
-      ZIPFILE_NAME = local.lambda_layer_zipfile_name
+      ARTIFACT_DIR      = abspath(local.lambda_artifact_dir)
+      REQUIREMENTS_PATH = var.requirements_file_path
+      ZIPFILE_NAME      = local.lambda_layer_zipfile_name
     }
   }
 

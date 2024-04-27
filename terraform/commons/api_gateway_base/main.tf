@@ -40,12 +40,12 @@ resource "aws_api_gateway_method_settings" "api_gw_settings" {
 }
 
 resource "aws_api_gateway_domain_name" "api_gw_domain_name" {
-  count = var.api_domain == "" ? 0 : 1
-  domain_name     = var.api_domain
+  count       = var.api_domain == "" ? 0 : 1
+  domain_name = var.api_domain
 }
 
 resource "aws_api_gateway_base_path_mapping" "api_mapping" {
-  count = var.api_domain == "" ? 0 : 1
+  count       = var.api_domain == "" ? 0 : 1
   api_id      = aws_api_gateway_rest_api.rest_api.id
   stage_name  = var.api_stage
   domain_name = aws_api_gateway_domain_name.api_gw_domain_name[0].domain_name

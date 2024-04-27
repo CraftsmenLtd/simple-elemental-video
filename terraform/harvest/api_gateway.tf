@@ -13,7 +13,7 @@ module "api_live_manifest" {
   methods  = ["POST"]
 
   region        = data.aws_region.current.name
-  environment   = var.prefix
+  prefix        = var.prefix
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.l2v_api_resource.id
 

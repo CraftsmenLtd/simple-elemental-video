@@ -27,6 +27,10 @@ tf-apply:
 tf-destroy:
 	$(run_docker) ${TERRAFORM_IMAGE} destroy --auto-approve
 
+tf-fmt:
+	terraform -chdir=terraform fmt -recursive
+
+
 MEDIACONNECT_FLOW_ARN=$(shell $(call get_output,mediaconnect_flow_arn))
 MEDIALIVE_CHANNEL_ID=$(shell $(call get_output,medialive_channel_id))
 MEDIACONNECT_INGRESS_IP=$(shell $(call get_output,mediaconnect_ingress_ip))

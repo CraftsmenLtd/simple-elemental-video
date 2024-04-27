@@ -1,4 +1,4 @@
-variable "environment" {
+variable "prefix" {
   type = string
 }
 
@@ -33,10 +33,6 @@ variable "api_key_required" {
   default = true
 }
 
-variable "enable_lambda_integration" {
-  default = false
-}
-
 variable "enable_s3_integration" {
   default = false
 }
@@ -54,6 +50,10 @@ variable "s3_integration_bucket" {
 variable "s3_integration_prefix" {
   type    = string
   default = ""
+}
+
+variable "enable_lambda_integration" {
+  default = false
 }
 
 variable "lambda_function_arn" {

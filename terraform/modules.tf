@@ -1,5 +1,5 @@
 module "mediaconnect" {
-  source = "./mediaconnect"
+  source                 = "./mediaconnect"
   prefix                 = var.prefix
   mediaconnect_protocol  = var.mediaconnect_settings.mediaconnect_protocol
   whitelist_cidr_address = var.mediaconnect_settings.whitelist_cidr_address
@@ -19,15 +19,15 @@ module "mediapackage" {
 }
 
 module "api-gateway" {
-  source = "./commons/api_gateway_base"
-  prefix = var.prefix
+  source    = "./commons/api_gateway_base"
+  prefix    = var.prefix
   api_stage = var.prefix
 }
 
 module "harvest" {
-  source = "./harvest"
-  prefix = var.prefix
-  api_gw_rest_api_id = module.api-gateway.api_gw_rest_api_id
+  source                  = "./harvest"
+  prefix                  = var.prefix
+  api_gw_rest_api_id      = module.api-gateway.api_gw_rest_api_id
   api_gw_root_resource_id = module.api-gateway.api_gw_root_resource_id
 }
 

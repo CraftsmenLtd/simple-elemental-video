@@ -4,9 +4,9 @@ variable "prefix" {
 }
 
 variable "api_domain" {
-  type = string
+  type        = string
   description = "API gateway domain"
-  default = ""
+  default     = ""
 }
 
 variable "api_stage" {
