@@ -39,7 +39,6 @@ resource "aws_lambda_function" "lambda_functions" {
   runtime          = local.lambda_runtime
   timeout          = lookup(each.value, "timeout", 60)
   memory_size      = lookup(each.value, "memory_size", 128)
-  kms_key_arn      = aws_kms_key.lambda_env_var_kms.arn
   architectures    = ["arm64"]
   layers           = [module.lambda_layer.layer_arn]
 
