@@ -27,7 +27,7 @@ module "api_live_manifest" {
 module "api_live_marker" {
   source = "./../commons/api_gateway"
 
-  api_path = "manifest"
+  api_path = "marker"
   methods  = ["POST"]
 
   region        = data.aws_region.current.name
