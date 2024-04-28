@@ -8,7 +8,7 @@ DOCKER_ENV=-e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e
 FFMPEG_IMAGE=sakibstark11/ffmpeg
 
 define get_output
-	docker run --rm $(DOCKER_RUN_MOUNT_OPTIONS) $(DOCKER_ENV) $(RUNNER_IMAGE_NAME) terraform output $(1)
+	terraform output $(1)
 endef
 
 tf-init:
@@ -71,4 +71,4 @@ deploy: run-command-tf-init run-command-tf-plan-apply run-command-tf-apply
 
 stream: run-command-start-pipeline wait-10 start-streaming print-hls-playback-url
 
-destroy: tf-init stop-pipeline tf-destroy
+destroy: run-command-tf-init run-command-stop-pipeline run-command-tf-plan-destroy run-command-tf-destroy

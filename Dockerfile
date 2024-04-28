@@ -1,6 +1,6 @@
 #checkov:skip=CKV_DOCKER_2: "Ensure that HEALTHCHECK instructions have been added to container images"
 #checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
-FROM debian:bookworm-slim
+FROM --platform=linux/amd64 debian:bookworm-slim
 
 # Common tools
 #checkov:skip=CKV_DOCKER_9: "Ensure that APT isn't used"
@@ -12,6 +12,7 @@ RUN apt update && apt install -y ca-certificates curl gnupg make gcc zip unzip a
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "tmp/awscliv2.zip"
 RUN cd /tmp && unzip awscliv2.zip
 RUN ./tmp/aws/install
+RUN rm tmp/awscliv2.zip
 
 # Terraform
 ARG TERRAFORM_VERSION
