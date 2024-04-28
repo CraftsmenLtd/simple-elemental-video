@@ -8,7 +8,10 @@ locals {
       source_directory = "${path.module}/../../harvest/l2v_harvest"
       handler          = "handler.handler"
       env_variables = {
-        harvest_role_arn = aws_iam_role.harvest_role.arn
+        harvest_role_arn          = aws_iam_role.harvest_role.arn
+        mediapackage_hls_endpoint = var.mediapackage_hls_endpoint
+        mediapackage_channel_id   = var.mediapackage_channel_id
+        medialive_channel_id      = var.medialive_channel_id
       }
     }
   }

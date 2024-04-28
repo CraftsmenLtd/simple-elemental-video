@@ -29,6 +29,9 @@ module "harvest" {
   prefix                  = var.prefix
   api_gw_rest_api_id      = module.api-gateway.api_gw_rest_api_id
   api_gw_root_resource_id = module.api-gateway.api_gw_root_resource_id
+  medialive_channel_id    = module.medialive.channel_id
+  mediapackage_channel_id = module.mediapackage.channel_id
+  mediapackage_hls_endpoint = module.mediapackage.hls_origin_endpoint
 }
 
 resource "aws_api_gateway_deployment" "api_deployment" {
