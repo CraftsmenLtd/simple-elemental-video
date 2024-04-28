@@ -24,7 +24,7 @@ module "api_live_manifest" {
 }
 
 # live/marker
-module "api_live_manifest" {
+module "api_live_marker" {
   source = "./../commons/api_gateway"
 
   api_path = "manifest"
@@ -49,7 +49,7 @@ resource "aws_api_gateway_resource" "harvest_api_resource" {
 }
 
 # harvest/job
-module "api_live_manifest" {
+module "api_harvest_job" {
   source = "./../commons/api_gateway"
 
   api_path = "job"
@@ -67,7 +67,7 @@ module "api_live_manifest" {
 }
 
 # harvest/status
-module "api_live_manifest" {
+module "api_harvest_status" {
   source = "./../commons/api_gateway"
 
   api_path = "status"
@@ -92,7 +92,7 @@ resource "aws_api_gateway_resource" "vod_api_resource" {
 }
 
 # vod/manifest
-module "api_live_manifest" {
+module "api_vod_manifest" {
   source = "./../commons/api_gateway"
 
   api_path = "manifest"
