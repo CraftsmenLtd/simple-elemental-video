@@ -13,7 +13,7 @@ module "api_live_manifest" {
   methods  = ["GET"]
 
   region        = data.aws_region.current.name
-  prefix        = var.prefix
+  prefix        = "${var.prefix}-live-manifest"
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.live_api_resource.id
 
@@ -31,7 +31,7 @@ module "api_live_marker" {
   methods  = ["POST"]
 
   region        = data.aws_region.current.name
-  prefix        = var.prefix
+  prefix        = "${var.prefix}-live-marker"
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.live_api_resource.id
 
@@ -56,7 +56,7 @@ module "api_harvest_job" {
   methods  = ["POST"]
 
   region        = data.aws_region.current.name
-  prefix        = var.prefix
+  prefix        = "${var.prefix}-harvest-job"
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.harvest_api_resource.id
 
@@ -74,7 +74,7 @@ module "api_harvest_status" {
   methods  = ["GET"]
 
   region        = data.aws_region.current.name
-  prefix        = var.prefix
+  prefix        = "${var.prefix}-harvest-status"
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.harvest_api_resource.id
 
@@ -99,7 +99,7 @@ module "api_vod_manifest" {
   methods  = ["POST"]
 
   region        = data.aws_region.current.name
-  prefix        = var.prefix
+  prefix        = "${var.prefix}-vod-manifest"
   rest_api_id   = var.api_gw_rest_api_id
   parent_api_id = aws_api_gateway_resource.vod_api_resource.id
 
