@@ -60,3 +60,20 @@ data "aws_iam_policy_document" "harvest_policy" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "harvest_bucket_policy_for_cloudfront" {
+  statement {
+    sid = "PublicRead"
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.web_player_access.iam_arn]
+    }
+    actions = [
+      "s3:GetObject"
+    ]
+    effect = "Allow"
+    resources = [
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
+    ]
+  }
+}
