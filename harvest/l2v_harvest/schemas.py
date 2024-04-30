@@ -17,3 +17,8 @@ class HarvestJob(BaseModel):
 
     class Config:
         allow_population_by_field_name = True
+
+
+class ScteMarker(BaseModel):
+    scte_marker_id: UUID4 = Field(..., alias="scteMarkerId")
+    ad_duration_in_sec: int = Field(..., alias="adDurationInSec")

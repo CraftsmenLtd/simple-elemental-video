@@ -12,6 +12,9 @@ from http import HTTPStatus
 
 from .job_create import handle_create_harvest_job
 from .utils import create_response
+from .scte_handler import handle_send_scte_marker
+from .manifest_handler import handle_get_manifest
+from .lambda_env import LambdaEnv
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
@@ -34,9 +37,17 @@ def handler(event, context):
 
     LOGGER.info("Received %s request for %s", http_method, path)
 
+    lambda_environment = LambdaEnv.get_lambda_env()
+    if lambda_environment is None:
+        raise KeyError("Failed to parse lambda environment")
+
     try:
         if path in ["/harvest-jobs", "/harvest-jobs/"] and http_method == "POST":
             return handle_create_harvest_job(event)
+        elif path in ["/live/marker", "/live/marker/"] and http_method == "POST":
+            return handle_send_scte_marker(event, lambda_environment)
+        elif path in ["/live/manifest", "/live/manifest/"] and http_method == "GET":
+            return handle_get_manifest(event, lambda_environment)
     # for unforeseeable scenarios
     except Exception as error:
         LOGGER.exception("Error processing request.", exc_info=error)
