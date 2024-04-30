@@ -40,7 +40,7 @@ def handle_create_harvest_job(event) -> dict:
     try:
         harvest_job = HarvestJob(**payload)
     except ValidationError:
-        create_response(
+        return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
             body={"error": "Invalid request payload."}
         )
