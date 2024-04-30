@@ -38,31 +38,45 @@ resource "aws_cloudfront_distribution" "web_player" {
   }
 
   viewer_certificate {
-    minimum_protocol_version = "TLSv1.2_2018"
+    cloudfront_default_certificate = true
   }
 }
 
-resource "aws_s3_object" "upload_web_player_dict" {
-  for_each = fileset("../../harvest/web-player/build/", "*")
+resource "null_resource" "update_build_script_permision" {
+  provisioner "local-exec" {
+    command = "chmod 700 harvest/web-player/build_web_player.sh"
+  }
+  triggers = {
+    always_run = timestamp()
+  }
 
-  bucket = aws_s3_bucket.harvest_bucket.id
-  key    = each.value
-  source = "../../harvest/web-player/build/${each.value}"
-
-  depends_on = [
-    null_resource.run_build_script
-  ]
 }
 
-resource "null_resource" "run_build_script" {
+resource "null_resource" "run_web_player_build_script" {
   provisioner "local-exec" {
-    command = "../../harvest/web-player/build_web_player.sh"
+    command = "harvest/web-player/build_web_player.sh"
     environment = {
-      module_path = path.module,
+      harvest_api_url = api_url_here,
     }
   }
 
   triggers = {
     always_run = timestamp()
   }
+  depends_on = [
+    null_resource.update_build_script_permision
+  ]
+}
+
+
+resource "aws_s3_object" "upload_web_player_dict" {
+  for_each = fileset("harvest/web-player/build/", "*")
+
+  bucket = aws_s3_bucket.harvest_bucket.id
+  key    = each.value
+  source = "harvest/web-player/build/${each.value}"
+
+  depends_on = [
+    null_resource.run_web_player_build_script
+  ]
 }
