@@ -9,6 +9,8 @@ lambda_python_layer_dir
 lambda_python_layer_file
 .terraform*
 terraform.tfstate*
+tf-apply.out
+tf-destroy.out
 
 # Tools
 .tool-versions
