@@ -4,6 +4,7 @@ resource "aws_api_gateway_rest_api" "rest_api" {
   binary_media_types = [
     "application/binary",
     "application/bxf+xml",
+    "application/json",
   ]
 
   lifecycle {
