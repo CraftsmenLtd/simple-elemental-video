@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "harvest_policy" {
   }
 }
 
-data "aws_iam_policy_document" "harvest_bucket_policy_for_cloudfront" {
+data "aws_iam_policy_document" "harvest_web_player_bucket_policy_for_cloudfront" {
   statement {
     sid = "PublicRead"
     principals {
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "harvest_bucket_policy_for_cloudfront" {
     ]
     effect = "Allow"
     resources = [
-      "${aws_s3_bucket.harvest_bucket.arn}/*"
+      "${aws_s3_bucket.harvest_web_player_bucket.arn}/*"
     ]
   }
 }

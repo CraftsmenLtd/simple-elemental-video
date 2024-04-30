@@ -1,9 +1,27 @@
+resource "aws_s3_bucket" "harvest_web_player_bucket" {
+  bucket = "${var.prefix}-harvest-web-player-bucket"
+}
+
+resource "aws_s3_bucket_public_access_block" "web_player_public_access" {
+  bucket = aws_s3_bucket.harvest_web_player_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+  ignore_public_acls      = true
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.harvest_web_player_bucket.id
+  policy = data.aws_iam_policy_document.harvest_web_player_bucket_policy_for_cloudfront.json
+}
+
 resource "aws_cloudfront_origin_access_identity" "web_player_access" {
   comment = "Access for web player client"
 }
 
 resource "aws_cloudfront_distribution" "web_player" {
-  default_root_object = "web-player/index.html"
+  default_root_object = "index.html"
   enabled             = true
   price_class         = "PriceClass_All"
   default_cache_behavior {
@@ -18,13 +36,13 @@ resource "aws_cloudfront_distribution" "web_player" {
     ]
     compress               = true
     smooth_streaming       = false
-    target_origin_id       = aws_s3_bucket.harvest_bucket.bucket_regional_domain_name
+    target_origin_id       = aws_s3_bucket.harvest_web_player_bucket.bucket_regional_domain_name
     viewer_protocol_policy = "allow-all"
   }
 
   origin {
-    domain_name = aws_s3_bucket.harvest_bucket.bucket_regional_domain_name
-    origin_id   = aws_s3_bucket.harvest_bucket.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.harvest_web_player_bucket.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.harvest_web_player_bucket.bucket_regional_domain_name
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.web_player_access.cloudfront_access_identity_path
     }
@@ -40,6 +58,10 @@ resource "aws_cloudfront_distribution" "web_player" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
+  depends_on = [
+    aws_s3_bucket.harvest_web_player_bucket
+  ]
 }
 
 resource "null_resource" "run_web_player_build_script" {
@@ -57,13 +79,13 @@ resource "null_resource" "run_web_player_build_script" {
 
 resource "null_resource" "remove_and_upload_to_s3" {
   provisioner "local-exec" {
-    command = "aws s3 sync harvest/web-player/build s3://${aws_s3_bucket.harvest_bucket.id}/web-player --delete"
+    command = "aws s3 sync harvest/web-player/build s3://${aws_s3_bucket.harvest_web_player_bucket.id}/ --delete"
   }
 
-    depends_on = [
+  depends_on = [
     null_resource.run_web_player_build_script
   ]
-    triggers = {
+  triggers = {
     always_run = timestamp()
   }
 }
