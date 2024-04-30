@@ -42,41 +42,28 @@ resource "aws_cloudfront_distribution" "web_player" {
   }
 }
 
-resource "null_resource" "update_build_script_permision" {
-  provisioner "local-exec" {
-    command = "chmod 700 harvest/web-player/build_web_player.sh"
-  }
-  triggers = {
-    always_run = timestamp()
-  }
-
-}
-
 resource "null_resource" "run_web_player_build_script" {
   provisioner "local-exec" {
     command = "harvest/web-player/build_web_player.sh"
     environment = {
-      harvest_api_url = api_url_here,
+      harvest_api_url = var.api_gateway_invoke_url
     }
   }
 
   triggers = {
     always_run = timestamp()
   }
-  depends_on = [
-    null_resource.update_build_script_permision
-  ]
 }
 
+resource "null_resource" "remove_and_upload_to_s3" {
+  provisioner "local-exec" {
+    command = "aws s3 sync harvest/web-player/build s3://${aws_s3_bucket.harvest_bucket.id}/web-player --delete"
+  }
 
-resource "aws_s3_object" "upload_web_player_dict" {
-  for_each = fileset("harvest/web-player/build/", "*")
-
-  bucket = aws_s3_bucket.harvest_bucket.id
-  key    = each.value
-  source = "harvest/web-player/build/${each.value}"
-
-  depends_on = [
+    depends_on = [
     null_resource.run_web_player_build_script
   ]
+    triggers = {
+    always_run = timestamp()
+  }
 }

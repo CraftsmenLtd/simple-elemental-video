@@ -27,3 +27,8 @@ variable "medialive_channel_id" {
   type        = string
   description = "AWS Medialive channel ID"
 }
+
+variable "api_gateway_invoke_url" {
+  type = string
+  description = "API Gateway invoke url"
+}
