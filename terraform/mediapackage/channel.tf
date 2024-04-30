@@ -5,6 +5,7 @@ locals {
       Properties = {
         Id        = "${var.prefix}-hls"
         ChannelId = aws_media_package_channel.channel.id
+        StartoverWindowSeconds = var.start_over_seconds
         HlsPackage = {
           PlaylistType = "EVENT"
         }

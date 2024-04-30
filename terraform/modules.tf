@@ -16,6 +16,7 @@ module "medialive" {
 module "mediapackage" {
   source = "./mediapackage"
   prefix = var.prefix
+  start_over_seconds = 3600
 }
 
 module "api-gateway" {
