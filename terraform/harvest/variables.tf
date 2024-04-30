@@ -12,3 +12,18 @@ variable "api_gw_root_resource_id" {
   type        = string
   description = "API Gateway REST API Root resource id"
 }
+
+variable "mediapackage_hls_endpoint" {
+  type        = string
+  description = "AWS mediapackage HLS endpoint"
+}
+
+variable "mediapackage_channel_id" {
+  type        = string
+  description = "AWS mediapackage channel ID"
+}
+
+variable "medialive_channel_id" {
+  type        = string
+  description = "AWS Medialive channel ID"
+}
