@@ -1,12 +1,10 @@
-import React, { useState, useRef } from "react";
-import ReactDOM from "react-dom";
-import ReactHlsPlayer from "react-hls-player";
+import React, { useState } from "react";
+import ReactHlsPlayer from "@ducanh2912/react-hls-player";
 import { Container, Row, Col } from "react-grid-system";
 
 import useGetManifestUrl from "../../hooks/useGetManifestUrl";
 
 function Vod({ eventId }) {
-    const [hlsUrl, setHlsUrl] = useState("");
     const { manifestUrl, error, isLoaded, refetchManifestUrl, isRefetching } = useGetManifestUrl(
         eventId,
         "vod"
