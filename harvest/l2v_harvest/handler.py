@@ -7,17 +7,16 @@ Currently, the following endpoints are supported:
     GET /harvest-jobs/{jobId}/status (show the status of a specific harvest job)
     GET /videos/{videoId}/manifest (retrieve the manifest for VOD playback)
 """
+import base64
 import logging
 from http import HTTPStatus
-import base64
 
-from constants import END_MARKER
-from job_create import handle_create_harvest_job, create_harvest_job_from_manifest
+from job_create import handle_create_harvest_job
 from job_status import handle_get_harvest_job_status
-from utils import create_response
-from scte_handler import handle_send_scte_marker
-from manifest_handler import handle_get_live_manifest, handle_get_vod_manifest
 from lambda_env import LambdaEnv
+from manifest_handler import handle_get_live_manifest, handle_get_vod_manifest
+from scte_handler import handle_send_scte_marker
+from utils import create_response
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
@@ -53,11 +52,7 @@ def handler(event, context):
         elif path in ["/live/marker"] and http_method == "POST":
             decoded_bytes = base64.b64decode(event["body"])
             event_body = decoded_bytes.decode('utf-8')
-            response = handle_send_scte_marker(event_body, lambda_environment)
-
-            if event_body["scte_marker_id"] == END_MARKER:
-                create_harvest_job_from_manifest(lambda_environment)
-            return response
+            return handle_send_scte_marker(event_body, lambda_environment)
         elif path in ["/live/manifest"] and http_method == "GET":
             return handle_get_live_manifest(lambda_environment)
         elif path in ["/vod/manifest"] and http_method == "GET":

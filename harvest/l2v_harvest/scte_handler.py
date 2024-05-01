@@ -2,7 +2,10 @@ import json
 from http import HTTPStatus
 
 from botocore.exceptions import ClientError
+
 from aws_utils.medialive import MedialiveHelper
+from constants import END_MARKER
+from job_create import create_harvest_job_from_manifest
 from lambda_env import LambdaEnv
 from schemas import ScteMarker
 from utils import create_response
@@ -46,6 +49,10 @@ def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
         medialive_helper.send_scte_marker(lambda_environment.medialive_channel_id,
                                           scte_marker.scte_marker_id,
                                           scte_marker.ad_duration_in_sec)
+
+        if payload["scte_marker_id"] == END_MARKER:
+            create_harvest_job_from_manifest(lambda_environment)
+
         return create_response(
             status_code=HTTPStatus.OK,
             body={"message": "Scte marker sent"}
