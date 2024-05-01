@@ -15,7 +15,7 @@ from job_create import handle_create_harvest_job
 from job_status import handle_get_harvest_job_status
 from utils import create_response
 from scte_handler import handle_send_scte_marker
-from manifest_handler import handle_get_manifest
+from manifest_handler import handle_get_live_manifest, handle_get_vod_manifest
 from lambda_env import LambdaEnv
 
 LOGGER = logging.getLogger()
@@ -55,7 +55,9 @@ def handler(event, context):
         elif path in ["/live/marker"] and http_method == "POST":
             return handle_send_scte_marker(event_body, lambda_environment)
         elif path in ["/live/manifest"] and http_method == "GET":
-            return handle_get_manifest(event, lambda_environment)
+            return handle_get_live_manifest(lambda_environment)
+        elif path in ["/vod/manifest"] and http_method == "GET":
+            return handle_get_vod_manifest(lambda_environment)
     # for unforeseeable scenarios
     except Exception as error:
         LOGGER.exception("Error processing request.", exc_info=error)

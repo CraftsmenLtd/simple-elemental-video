@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "lambda_common_policy" {
   version = "2012-10-17"
 
   statement {
-    sid = "LogPolicy"
+    sid     = "LogPolicy"
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -28,6 +28,25 @@ data "aws_iam_policy_document" "lambda_common_policy" {
     resources = [
       "arn:aws:logs:*:*:*",
       "arn:aws:medialive:*:*:channel:*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "harvest_lambda_policy" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.lambda_common_policy.json
+  ]
+
+  statement {
+    sid     = "HarvestLambdaPolicy"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.harvest_bucket.arn,
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
     ]
   }
 }
@@ -46,11 +65,11 @@ data "aws_iam_policy_document" "harvest_assume_role_policy" {
   }
 }
 
-data "aws_iam_policy_document" "harvest_policy" {
+data "aws_iam_policy_document" "harvest_job_policy" {
   version = "2012-10-17"
 
   statement {
-    sid = "HarvestPolicy"
+    sid     = "HarvestPolicy"
     actions = [
       "s3:ListBucket",
       "s3:GetBucketLocation",
@@ -65,7 +84,26 @@ data "aws_iam_policy_document" "harvest_policy" {
   }
 }
 
-data "aws_iam_policy_document" "harvest_web_player_bucket_policy_for_cloudfront" {
+data "aws_iam_policy_document" "harvest_bucket_policy" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "PublicRead"
+    effect    = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "harvest_web_player_bucket_cloudfront_policy" {
   statement {
     sid = "PublicRead"
     principals {
@@ -75,7 +113,7 @@ data "aws_iam_policy_document" "harvest_web_player_bucket_policy_for_cloudfront"
     actions = [
       "s3:GetObject"
     ]
-    effect = "Allow"
+    effect    = "Allow"
     resources = [
       "${aws_s3_bucket.harvest_web_player_bucket.arn}/*"
     ]

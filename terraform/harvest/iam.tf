@@ -31,7 +31,7 @@ resource "aws_iam_role" "harvest_role" {
 resource "aws_iam_role_policy" "harvest_role_policy" {
   name   = "${var.prefix}-harvest-role-policy"
   role   = aws_iam_role.harvest_role.id
-  policy = data.aws_iam_policy_document.harvest_policy.json
+  policy = data.aws_iam_policy_document.harvest_job_policy.json
 
   lifecycle {
     create_before_destroy = true
