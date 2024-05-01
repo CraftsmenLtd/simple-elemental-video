@@ -21,11 +21,13 @@ data "aws_iam_policy_document" "lambda_common_policy" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:DescribeLogStreams"
+      "logs:DescribeLogStreams",
+      "medialive:BatchUpdateSchedule"
     ]
 
     resources = [
-      "arn:aws:logs:*:*:*"
+      "arn:aws:logs:*:*:*",
+      "arn:aws:medialive:*:*:channel:*"
     ]
   }
 }
