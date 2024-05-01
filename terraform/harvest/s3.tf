@@ -25,3 +25,20 @@ resource "aws_s3_bucket_policy" "harvest_web_player_bucket_policy" {
   bucket = aws_s3_bucket.harvest_web_player_bucket.id
   policy = data.aws_iam_policy_document.harvest_web_player_bucket_cloudfront_policy.json
 }
+
+resource "aws_s3_bucket_cors_configuration" "harvest_bucket_cors" {
+  bucket = aws_s3_bucket.harvest_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "HEAD"]
+    allowed_origins = ["*"]
+    expose_headers  = []
+    max_age_seconds = 3000
+  }
+
+  cors_rule {
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+  }
+}
