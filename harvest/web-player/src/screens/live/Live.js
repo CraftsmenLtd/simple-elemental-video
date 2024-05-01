@@ -14,7 +14,7 @@ function Live({ eventId, isAdmin }) {
 
     function handleSendScteMarker(marker) {
         if (markerTime != "") {
-            sendScteMarker(eventId, marker, markerTime);
+            sendScteMarker(marker, markerTime);
         }
     }
 
@@ -59,7 +59,7 @@ function Live({ eventId, isAdmin }) {
                                             className="btn btn-primary mx-2"
                                             onClick={() => handleSendScteMarker("505")}
                                         >
-                                            505
+                                            Start Marker
                                         </button>
                                     </div>
                                     <div>
@@ -67,7 +67,7 @@ function Live({ eventId, isAdmin }) {
                                             className="btn btn-primary mx-2"
                                             onClick={() => handleSendScteMarker("305")}
                                         >
-                                            305
+                                            End Marker
                                         </button>
                                     </div>
                                 </Row>
