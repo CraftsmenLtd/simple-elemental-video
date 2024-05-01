@@ -26,8 +26,7 @@ def _get_sub_manifest_url(origin_endpoint: str) -> Optional[str]:
         return None
 
     try:
-        sub_manifest_url: str = (manifest.playlists[0].absolute_uri +
-                                 "&timed_metadata=true")
+        sub_manifest_url: str = manifest.playlists[0].absolute_uri
     except (AttributeError, IndexError, ValueError, TypeError) as error:
         LOGGER.exception(
             "Can not generate sub manifest url for %s",
@@ -62,7 +61,7 @@ def get_markers(monitoring_cache_url: str) -> Dict[str, int]:
     markers: Dict[str, str] = {}
     for segment in sub_manifest_playlist.segments:
         for daterange in segment.dateranges:
-            marker_id: str = daterange.id.split("-")[0]
+            marker_id: str = daterange.id.split("-")[-1]
             markers[marker_id] = daterange.start_date
 
     return markers
