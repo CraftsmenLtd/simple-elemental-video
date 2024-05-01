@@ -48,9 +48,9 @@ def handler(event, context):
         if path.startswith("/harvest/jobs/") and http_method == "GET":
             job_id = path.split("/")[-1]
             return handle_get_harvest_job_status(job_id)
-        elif path in ["/live/marker", "/live/marker/"] and http_method == "POST":
+        elif path in ["/live/marker"] and http_method == "POST":
             return handle_send_scte_marker(event, lambda_environment)
-        elif path in ["/live/manifest", "/live/manifest/"] and http_method == "GET":
+        elif path in ["/live/manifest"] and http_method == "GET":
             return handle_get_manifest(event, lambda_environment)
     # for unforeseeable scenarios
     except Exception as error:

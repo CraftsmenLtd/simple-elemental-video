@@ -2,18 +2,15 @@ import { useState, useEffect } from "react";
 import ApiConfig from "../services/ApiConfig";
 import axios from "axios";
 
-let demourl = {
-    manifest_url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-};
+
 const GetLiveManifestUrl = (eventId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // const config = await ApiConfig();
-            // config.method = "get";
-            // config.url += "/live-streams/manifest?event_id=" + eventId;
-            // const response = await axios(config);
-            // resolve(response.data);
-            resolve(demourl);
+            const config = await ApiConfig();
+            config.method = "get";
+            config.url += "/live/manifest"
+            const response = await axios(config);
+            resolve(response.data);
         } catch (error) {
             reject(error.response.data);
         }
@@ -23,12 +20,11 @@ const GetLiveManifestUrl = (eventId) => {
 const GetVodManifestUrl = (eventId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // const config = await ApiConfig();
-            // config.method = "get";
-            // config.url += "/videos/" + eventId + "/manifest";
-            // const response = await axios(config);
-            // resolve(response.data);
-            resolve(demourl);
+            const config = await ApiConfig();
+            config.method = "get";
+            config.url += "/vod/manifest"
+            const response = await axios(config);
+            resolve(response.data);
         } catch (error) {
             reject(error.response.data);
         }
@@ -71,7 +67,7 @@ const useGetManifestUrl = (eventId, manifestType) => {
             response = await GetVodManifestUrl(eventId);
         }
 
-        let manifest = response["manifest_url"];
+        let manifest = response["endpoint"];
         setIsLoaded(true);
         setManifestUrl(manifest);
     }
