@@ -8,7 +8,7 @@ resource "aws_s3_bucket_policy" "harvest_bucket_policy" {
 }
 
 resource "aws_s3_bucket" "harvest_web_player_bucket" {
-  bucket = "${var.prefix}-harvest-web-player-bucket"
+  bucket        = "${var.prefix}-harvest-web-player-bucket"
   force_destroy = true
 }
 

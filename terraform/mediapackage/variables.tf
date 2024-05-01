@@ -4,13 +4,13 @@ variable "prefix" {
 }
 
 variable "start_over_seconds" {
-  type = number
+  type        = number
   description = "AWS Mediapackage startover in seconds"
-  default = 0
+  default     = 0
 }
 
 variable "playlist_window_seconds" {
-  type = number
+  type        = number
   description = "AWS Mediapackage playlist window in seconds"
-  default = 60
+  default     = 60
 }

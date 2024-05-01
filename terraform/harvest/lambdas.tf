@@ -13,7 +13,7 @@ locals {
         mediapackage_hls_endpoint = var.mediapackage_hls_endpoint
         mediapackage_channel_id   = var.mediapackage_channel_id
         medialive_channel_id      = var.medialive_channel_id
-        harvest_bucket_name = aws_s3_bucket.harvest_bucket.id
+        harvest_bucket_name       = aws_s3_bucket.harvest_bucket.id
         vod_bucket_domain_name    = aws_s3_bucket.harvest_bucket.bucket_domain_name
       }
     }

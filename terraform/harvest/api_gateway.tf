@@ -110,7 +110,7 @@ module "api_vod_manifest" {
 }
 
 resource "aws_lambda_permission" "apigw_lambda" {
-  for_each         = local.lambda_options
+  for_each      = local.lambda_options
   statement_id  = "AllowExecutionFromAPIGateway-${each.key}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_functions[each.key].function_name
