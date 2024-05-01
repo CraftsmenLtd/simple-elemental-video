@@ -49,9 +49,8 @@ def handler(event, context):
         if path.startswith("/harvest/jobs/") and http_method == "GET":
             job_id = path.split("/")[-1]
             return handle_get_harvest_job_status(job_id)
-        elif path in ["/live/marker"] and http_method == "POST":
-            decoded_bytes = base64.b64decode(event["body"])
-            event_body = decoded_bytes.decode('utf-8')
+        elif path in ["/live/marker"] and http_method == "GET":
+            event_body =event["queryStringParameters"]
             return handle_send_scte_marker(event_body, lambda_environment)
         elif path in ["/live/manifest"] and http_method == "GET":
             return handle_get_live_manifest(lambda_environment)

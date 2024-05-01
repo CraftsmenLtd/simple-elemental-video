@@ -23,7 +23,7 @@ def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
         and response body.
     """
     try:
-        payload = json.loads(event_body)
+        payload = event_body
     except KeyError:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
@@ -48,7 +48,7 @@ def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
         medialive_helper.set_up()
         medialive_helper.send_scte_marker(lambda_environment.medialive_channel_id,
                                           scte_marker.scte_marker_id,
-                                          scte_marker.ad_duration_in_sec)
+                                          int(scte_marker.ad_duration_in_sec))
 
         if payload["scte_marker_id"] == END_MARKER:
             create_harvest_job_from_manifest(lambda_environment)
