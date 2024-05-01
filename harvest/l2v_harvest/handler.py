@@ -16,6 +16,7 @@ from .utils import create_response
 from .scte_handler import handle_send_scte_marker
 from .manifest_handler import handle_get_manifest
 from .lambda_env import LambdaEnv
+from .transcode import handle_transcode
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
@@ -48,10 +49,13 @@ def handler(event, context):
         if path.startswith("/harvest/jobs/") and http_method == "GET":
             job_id = path.split("/")[-1]
             return handle_get_harvest_job_status(job_id)
-        elif path in ["/live/marker", "/live/marker/"] and http_method == "POST":
+        if path in ["/live/marker", "/live/marker/"] and http_method == "POST":
             return handle_send_scte_marker(event, lambda_environment)
-        elif path in ["/live/manifest", "/live/manifest/"] and http_method == "GET":
+        if path in ["/live/manifest", "/live/manifest/"] and http_method == "GET":
             return handle_get_manifest(event, lambda_environment)
+        if path.startswith("/transcode/") and http_method == "POST":
+            file = path.split("/")[-1]
+            return handle_transcode(file)
     # for unforeseeable scenarios
     except Exception as error:
         LOGGER.exception("Error processing request.", exc_info=error)
