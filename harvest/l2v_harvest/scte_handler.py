@@ -8,7 +8,7 @@ from schemas import ScteMarker
 from utils import create_response
 
 
-def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
+def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
     """Send scte marker to medialive channel
 
     Parameters:
@@ -20,7 +20,7 @@ def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
         and response body.
     """
     try:
-        payload = json.loads(event["body"])
+        payload = json.loads(event_body)
     except KeyError:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,

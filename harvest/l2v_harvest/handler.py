@@ -9,6 +9,7 @@ Currently, the following endpoints are supported:
 """
 import logging
 from http import HTTPStatus
+import base64
 
 from job_create import handle_create_harvest_job
 from job_status import handle_get_harvest_job_status
@@ -42,6 +43,8 @@ def handler(event, context):
     if lambda_environment is None:
         raise KeyError("Failed to parse lambda environment")
 
+    event_body = event["body"].decode('utf-8')
+
     try:
         if path in ["/harvest/jobs", "/harvest/jobs/"] and http_method == "POST":
             return handle_create_harvest_job(event)
@@ -49,7 +52,7 @@ def handler(event, context):
             job_id = path.split("/")[-1]
             return handle_get_harvest_job_status(job_id)
         elif path in ["/live/marker"] and http_method == "POST":
-            return handle_send_scte_marker(event, lambda_environment)
+            return handle_send_scte_marker(event_body, lambda_environment)
         elif path in ["/live/manifest"] and http_method == "GET":
             return handle_get_manifest(event, lambda_environment)
     # for unforeseeable scenarios
