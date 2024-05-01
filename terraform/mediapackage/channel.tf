@@ -8,6 +8,8 @@ locals {
         StartoverWindowSeconds = var.start_over_seconds
         HlsPackage = {
           PlaylistType          = "EVENT"
+          AdTriggers            = ["SPLICE_INSERT"]
+          AdMarkers             = "DATERANGE"
           PlaylistWindowSeconds = var.playlist_window_seconds
         }
       }
