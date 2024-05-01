@@ -13,10 +13,11 @@ def create_response(status_code: int, body: dict) -> dict:
     """
     return {
         "statusCode": status_code,
-        'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        "headers": {
+            "X-Requested-With": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
         },
         "body": json.dumps(body, indent=4, default=str)
     }
