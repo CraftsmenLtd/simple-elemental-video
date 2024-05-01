@@ -8,6 +8,7 @@ locals {
         StartoverWindowSeconds = var.start_over_seconds
         HlsPackage = {
           PlaylistType = "EVENT"
+          PlaylistWindowSeconds = var.playlist_window_seconds
         }
       }
     }

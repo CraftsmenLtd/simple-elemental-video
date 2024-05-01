@@ -53,12 +53,3 @@ resource "aws_lambda_function" "lambda_functions" {
     create_before_destroy = true
   }
 }
-
-resource "aws_lambda_permission" "apigw_lambda" {
-
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda_functions.function_name
-  principal     = "apigateway.amazonaws.com"
-
-}

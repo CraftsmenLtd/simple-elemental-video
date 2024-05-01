@@ -108,3 +108,11 @@ module "api_vod_manifest" {
   enable_lambda_integration = true
   lambda_function_arn       = aws_lambda_function.lambda_functions[local.lambda_options.l2v-harvest.name].arn
 }
+
+resource "aws_lambda_permission" "apigw_lambda" {
+  for_each         = local.lambda_options
+  statement_id  = "AllowExecutionFromAPIGateway-${each.key}"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_functions[each.key].function_name
+  principal     = "apigateway.amazonaws.com"
+}

@@ -8,3 +8,9 @@ variable "start_over_seconds" {
   description = "AWS Mediapackage startover in seconds"
   default = 0
 }
+
+variable "playlist_window_seconds" {
+  type = number
+  description = "AWS Mediapackage playlist window in seconds"
+  default = 60
+}

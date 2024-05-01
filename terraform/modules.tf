@@ -17,6 +17,7 @@ module "mediapackage" {
   source = "./mediapackage"
   prefix = var.prefix
   start_over_seconds = 3600
+  playlist_window_seconds = 300
 }
 
 module "api-gateway" {
