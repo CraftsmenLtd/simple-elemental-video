@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactHlsPlayer from "@ducanh2912/react-hls-player";
+import ReactHlsPlayer from "react-hls-player";
 import { Container, Row, Col } from "react-grid-system";
 
 import useGetManifestUrl from "../../hooks/useGetManifestUrl";

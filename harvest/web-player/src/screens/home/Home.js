@@ -19,7 +19,7 @@ function Home() {
         const isAdmin = searchParamsDict["is_admin"];
         return { eventId, isAdmin };
     }
-    console.log(isAdmin)
+
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
