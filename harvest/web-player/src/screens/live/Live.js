@@ -5,7 +5,7 @@ import { Container, Row, Col } from "react-grid-system";
 import useGetManifestUrl from "../../hooks/useGetManifestUrl";
 import sendScteMarker from "../../api/sendScteMarker";
 
-function Live({ eventId }) {
+function Live({ eventId, isAdmin }) {
     const [markerTime, setMarkerTime] = useState("");
     const { manifestUrl, error, isLoaded, refetchManifestUrl, isRefetching } = useGetManifestUrl(
         eventId,
@@ -31,46 +31,48 @@ function Live({ eventId }) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <Row>
-                                <div>
-                                    <label className="m-2 my-4 font-weight-bold">
-                                        Select marker time
-                                    </label>
-                                    {/* <input
+                        {isAdmin == "true" &&
+                            <Col>
+                                <Row>
+                                    <div>
+                                        <label className="m-2 my-4 font-weight-bold">
+                                            Select marker time
+                                        </label>
+                                        {/* <input
                                         type="datetime-local"
                                         value={markerTime}
                                         onChange={(e) => setMarkerTime(e.target.value)}
                                     /> */}
-                                    <input
-                                        type="text"
-                                        value={markerTime}
-                                        onChange={(e) => setMarkerTime(e.target.value)}
-                                    />
-                                </div>
-                            </Row>
-                            <Row>
-                                <div className="flex-content">
-                                    <label className="m-2 my-2 font-weight-bold">Send marker</label>
-                                </div>
-                                <div>
-                                    <button
-                                        className="btn btn-primary mx-2"
-                                        onClick={() => handleSendScteMarker("505")}
-                                    >
-                                        505
-                                    </button>
-                                </div>
-                                <div>
-                                    <button
-                                        className="btn btn-primary mx-2"
-                                        onClick={() => handleSendScteMarker("305")}
-                                    >
-                                        305
-                                    </button>
-                                </div>
-                            </Row>
-                        </Col>
+                                        <input
+                                            type="text"
+                                            value={markerTime}
+                                            onChange={(e) => setMarkerTime(e.target.value)}
+                                        />
+                                    </div>
+                                </Row>
+                                <Row>
+                                    <div className="flex-content">
+                                        <label className="m-2 my-2 font-weight-bold">Send marker</label>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className="btn btn-primary mx-2"
+                                            onClick={() => handleSendScteMarker("505")}
+                                        >
+                                            505
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className="btn btn-primary mx-2"
+                                            onClick={() => handleSendScteMarker("305")}
+                                        >
+                                            305
+                                        </button>
+                                    </div>
+                                </Row>
+                            </Col>
+                        }
                         <Col>
                             <ReactHlsPlayer
                                 className="border border-3 border-info"

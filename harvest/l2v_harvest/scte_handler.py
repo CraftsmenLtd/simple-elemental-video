@@ -1,7 +1,6 @@
 import json
 from http import HTTPStatus
 
-from pydantic import ValidationError
 from botocore.exceptions import ClientError
 from aws_utils.medialive import MedialiveHelper
 from lambda_env import LambdaEnv
@@ -35,7 +34,7 @@ def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
 
     try:
         scte_marker = ScteMarker(**payload)
-    except ValidationError:
+    except Exception:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
             body={"error": "Invalid request payload."}

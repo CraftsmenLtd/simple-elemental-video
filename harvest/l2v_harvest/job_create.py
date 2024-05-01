@@ -4,7 +4,6 @@ from http import HTTPStatus
 
 import boto3
 from botocore.exceptions import ClientError
-from pydantic import ValidationError
 
 from schemas import HarvestJob
 from utils import create_response
@@ -39,7 +38,7 @@ def handle_create_harvest_job(event) -> dict:
 
     try:
         harvest_job = HarvestJob(**payload)
-    except ValidationError:
+    except Exception:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
             body={"error": "Invalid request payload."}

@@ -10,15 +10,16 @@ const MemoizedLive = memo(liveScreen);
 const MemoizedVod = memo(vodScreen);
 
 function Home() {
-    var { eventId } = getParams();
+    var { eventId, isAdmin } = getParams();
 
     function getParams() {
         const searchParams = new URLSearchParams(window.location.search);
         let searchParamsDict = Object.fromEntries(searchParams.entries());
         const eventId = searchParamsDict["event_id"];
-        return { eventId };
+        const isAdmin = searchParamsDict["is_admin"];
+        return { eventId, isAdmin };
     }
-
+    console.log(isAdmin)
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
@@ -27,12 +28,12 @@ function Home() {
         {
             title: "Live",
             tab_url: "live",
-            content: <MemoizedLive eventId={eventId} />,
+            content: <MemoizedLive eventId={eventId} isAdmin={isAdmin} />,
         },
         {
             title: "Vod",
             tab_url: "vod",
-            content: <MemoizedVod eventId={eventId} />,
+            content: <MemoizedVod eventId={eventId} isAdmin={isAdmin} />,
         },
     ];
 
@@ -67,9 +68,8 @@ function Home() {
                             >
                                 <div className="nav_item_div">
                                     <a
-                                        className={`nav-link ${
-                                            activeTab === index ? "active" : "not_active"
-                                        }`}
+                                        className={`nav-link ${activeTab === index ? "active" : "not_active"
+                                            }`}
                                         onClick={() => handleTabClick(index)}
                                         href={`#${tab.tab_url}`}
                                     >
@@ -82,9 +82,8 @@ function Home() {
                     <div className="tab-content pt-2 tab_content">
                         {tabs.map((tab, index) => (
                             <div
-                                className={`tab-pane fade ${
-                                    activeTab === index ? "show active" : ""
-                                }`}
+                                className={`tab-pane fade ${activeTab === index ? "show active" : ""
+                                    }`}
                                 key={index}
                             >
                                 {tabsLoaded[index] ? tab.content : null}
