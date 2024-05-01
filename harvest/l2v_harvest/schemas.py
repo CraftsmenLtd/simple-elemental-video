@@ -21,5 +21,5 @@ class HarvestJob:
 
 @dataclass
 class ScteMarker:
-    scte_marker_id: UUID
+    scte_marker_id: str
     ad_duration_in_sec: int

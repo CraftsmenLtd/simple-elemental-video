@@ -1,3 +1,4 @@
-typing-extensions==4.11.0
 boto3-stubs[s3,medialive,mediapackage]
+m3u8
+typing-extensions==4.11.0
 urllib3==1.26.6

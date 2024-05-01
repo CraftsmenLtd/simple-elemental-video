@@ -96,7 +96,7 @@ module "api_vod_manifest" {
   source = "./../commons/api_gateway"
 
   api_path = "manifest"
-  methods  = ["POST"]
+  methods  = ["GET"]
 
   region        = data.aws_region.current.name
   prefix        = "${var.prefix}-vod-manifest"

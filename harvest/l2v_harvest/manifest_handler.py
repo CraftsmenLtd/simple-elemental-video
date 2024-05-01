@@ -23,9 +23,10 @@ def handle_get_vod_manifest(lambda_environment: LambdaEnv):
         return create_response(
             status_code=HTTPStatus.OK,
             body={
-                "endpoint": f"https://{lambda_environment.vod_bucket_domain_name}/{last_modified_files[0]['Key']}"}
+                "endpoint": f"https://{lambda_environment.vod_bucket_domain_name}/{last_modified_files[0]['Key']}"
+            }
         )
     return create_response(
         status_code=HTTPStatus.NOT_FOUND,
-        body={"job": f"L2V jod is not finished yet"}
+        body={"not_found": f"L2V jod is not finished yet"}
     )

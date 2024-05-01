@@ -7,6 +7,7 @@ locals {
       policy           = data.aws_iam_policy_document.harvest_lambda_policy
       source_directory = "${path.module}/../../harvest/l2v_harvest"
       handler          = "handler.handler"
+      timeout          = 300
       env_variables = {
         harvest_role_arn          = aws_iam_role.harvest_role.arn
         mediapackage_hls_endpoint = var.mediapackage_hls_endpoint
