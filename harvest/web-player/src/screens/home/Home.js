@@ -86,7 +86,7 @@ function Home() {
                                     }`}
                                 key={index}
                             >
-                                {tabsLoaded[index] ? tab.content : null}
+                                {activeTab === index ? tab.content : null}
                             </div>
                         ))}
                     </div>
