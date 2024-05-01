@@ -2,6 +2,7 @@
 import datetime
 import json
 import logging
+import os
 from typing import Optional
 
 import boto3
@@ -18,14 +19,15 @@ class MedialiveHelper:
     def __init__(self):
         self._ml_client: Optional[MediaLiveClient] = None
 
-    def set_up(self, profile: str, region: str) -> None:
+    def set_up(self) -> None:
         """Setup medialive helper
 
         :param profile:
         :param region:
         :return: None
         """
-        aws_session = boto3.session.Session(profile_name=profile)
+        region=os.environ["AWS_REGION"]
+        aws_session = boto3.session.Session()
         self._ml_client: MediaLiveClient = aws_session.client("medialive", region,
                                                               config=BOTO_CONFIG)
 
@@ -57,7 +59,7 @@ class MedialiveHelper:
 
     def send_scte_marker(self, medialive_channel_id: str,
                          splice_event_id: str, ad_length_in_secs: int = 10,
-                         start_after_sec=0) -> None:
+                         start_after_sec=20) -> None:
         """Send SCTE marker to medialive channel
 
         :param medialive_channel_id: AWS medialive channel ID

@@ -43,7 +43,8 @@ def handler(event, context):
     if lambda_environment is None:
         raise KeyError("Failed to parse lambda environment")
 
-    event_body = event["body"].decode('utf-8')
+    decoded_bytes = base64.b64decode(event["body"])
+    event_body = decoded_bytes.decode('utf-8')
 
     try:
         if path in ["/harvest/jobs", "/harvest/jobs/"] and http_method == "POST":

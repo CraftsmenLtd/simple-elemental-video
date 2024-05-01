@@ -42,6 +42,7 @@ def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
 
     try:
         medialive_helper = MedialiveHelper()
+        medialive_helper.set_up()
         medialive_helper.send_scte_marker(lambda_environment.medialive_channel_id,
                                           scte_marker.scte_marker_id,
                                           scte_marker.ad_duration_in_sec)
