@@ -52,11 +52,13 @@ data "aws_iam_policy_document" "harvest_policy" {
     actions = [
       "s3:ListBucket",
       "s3:GetBucketLocation",
+      "s3:GetBucketRequestPayment",
       "s3:PutObject"
     ]
 
     resources = [
-      aws_s3_bucket.harvest_bucket.arn
+      aws_s3_bucket.harvest_bucket.arn,
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
     ]
   }
 }
