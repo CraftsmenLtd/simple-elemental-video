@@ -42,7 +42,7 @@ resource "aws_lambda_function" "lambda_functions" {
   runtime          = local.lambda_runtime
   timeout          = lookup(each.value, "timeout", 60)
   memory_size      = lookup(each.value, "memory_size", 128)
-  architectures    = ["arm64"]
+  architectures    = ["x86_64"]
   layers           = [module.lambda_layer.layer_arn]
 
   environment {

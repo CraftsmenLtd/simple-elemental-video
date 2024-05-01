@@ -10,12 +10,12 @@ Currently, the following endpoints are supported:
 import logging
 from http import HTTPStatus
 
-from .job_create import handle_create_harvest_job
-from .job_status import handle_get_harvest_job_status
-from .utils import create_response
-from .scte_handler import handle_send_scte_marker
-from .manifest_handler import handle_get_manifest
-from .lambda_env import LambdaEnv
+from job_create import handle_create_harvest_job
+from job_status import handle_get_harvest_job_status
+from utils import create_response
+from scte_handler import handle_send_scte_marker
+from manifest_handler import handle_get_manifest
+from lambda_env import LambdaEnv
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)

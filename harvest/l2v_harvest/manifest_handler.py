@@ -1,6 +1,4 @@
-import os
-
-from .lambda_env import LambdaEnv
+from lambda_env import LambdaEnv
 
 
 def handle_get_manifest(event, lambda_environment: LambdaEnv):

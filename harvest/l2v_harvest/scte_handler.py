@@ -3,10 +3,10 @@ from http import HTTPStatus
 
 from pydantic import ValidationError
 from botocore.exceptions import ClientError
-from .aws_utils.medialive import MedialiveHelper
-from .lambda_env import LambdaEnv
-from .schemas import ScteMarker
-from .utils import create_response
+from aws_utils.medialive import MedialiveHelper
+from lambda_env import LambdaEnv
+from schemas import ScteMarker
+from utils import create_response
 
 
 def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
