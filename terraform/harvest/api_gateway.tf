@@ -28,7 +28,7 @@ module "api_live_marker" {
   source = "./../commons/api_gateway"
 
   api_path = "marker"
-  methods  = ["POST"]
+  methods  = ["GET", "POST"]
 
   region        = data.aws_region.current.name
   prefix        = "${var.prefix}-live-marker"
