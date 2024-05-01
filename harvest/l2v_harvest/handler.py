@@ -43,9 +43,6 @@ def handler(event, context):
     if lambda_environment is None:
         raise KeyError("Failed to parse lambda environment")
 
-    decoded_bytes = base64.b64decode(event["body"])
-    event_body = decoded_bytes.decode('utf-8')
-
     try:
         if path in ["/harvest/jobs", "/harvest/jobs/"] and http_method == "POST":
             return handle_create_harvest_job(event)
@@ -53,6 +50,8 @@ def handler(event, context):
             job_id = path.split("/")[-1]
             return handle_get_harvest_job_status(job_id)
         elif path in ["/live/marker"] and http_method == "POST":
+            decoded_bytes = base64.b64decode(event["body"])
+            event_body = decoded_bytes.decode('utf-8')
             return handle_send_scte_marker(event_body, lambda_environment)
         elif path in ["/live/manifest"] and http_method == "GET":
             return handle_get_live_manifest(lambda_environment)
