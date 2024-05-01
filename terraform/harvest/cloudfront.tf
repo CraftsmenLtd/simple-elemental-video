@@ -1,21 +1,3 @@
-resource "aws_s3_bucket" "harvest_web_player_bucket" {
-  bucket = "${var.prefix}-harvest-web-player-bucket"
-}
-
-resource "aws_s3_bucket_public_access_block" "web_player_public_access" {
-  bucket = aws_s3_bucket.harvest_web_player_bucket.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-  ignore_public_acls      = true
-}
-
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.harvest_web_player_bucket.id
-  policy = data.aws_iam_policy_document.harvest_web_player_bucket_policy_for_cloudfront.json
-}
-
 resource "aws_cloudfront_origin_access_identity" "web_player_access" {
   comment = "Access for web player client"
 }
@@ -85,6 +67,7 @@ resource "null_resource" "remove_and_upload_to_s3" {
   depends_on = [
     null_resource.run_web_player_build_script
   ]
+
   triggers = {
     always_run = timestamp()
   }
