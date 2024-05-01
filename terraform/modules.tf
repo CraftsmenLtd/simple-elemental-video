@@ -47,8 +47,4 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   lifecycle {
     create_before_destroy = true
   }
-
-  variables = {
-     always_run = "${timestamp()}"
-  }
 }
