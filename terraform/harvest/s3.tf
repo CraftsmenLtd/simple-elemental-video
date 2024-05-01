@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "harvest_bucket" {
   bucket = "${var.prefix}-harvest-bucket"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_policy" "harvest_bucket_policy" {
