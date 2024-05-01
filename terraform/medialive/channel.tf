@@ -34,7 +34,7 @@ resource "aws_medialive_channel" "channel" {
 
   encoder_settings {
     timecode_config {
-      source = "EMBEDDED"
+      source = "SYSTEMCLOCK"
     }
 
     audio_descriptions {
