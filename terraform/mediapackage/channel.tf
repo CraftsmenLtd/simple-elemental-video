@@ -11,6 +11,7 @@ locals {
           AdTriggers            = ["SPLICE_INSERT"]
           AdMarkers             = "DATERANGE"
           PlaylistWindowSeconds = var.playlist_window_seconds
+          ProgramDateTimeIntervalSeconds = 0
         }
       }
     }
