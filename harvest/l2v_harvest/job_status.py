@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import boto3
 
-from .utils import create_response
+from utils import create_response
 
 
 def handle_get_harvest_job_status(job_id: str) -> dict:

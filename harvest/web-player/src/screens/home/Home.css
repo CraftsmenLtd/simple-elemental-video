@@ -1,0 +1,22 @@
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+    overflow-x: auto;
+}
+
+.home_class {
+    max-width: 100% !important;
+    padding-bottom: 20px !important;
+}
+
+.padding-10 {
+    padding: 10px !important;
+}
+
+.center {
+    margin: auto;
+}
+
+.flex-content {
+    display: flex;
+}

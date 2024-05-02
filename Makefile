@@ -71,4 +71,4 @@ deploy: run-command-tf-init run-command-tf-plan-apply run-command-tf-apply
 
 stream: run-command-start-pipeline wait-10 start-streaming print-hls-playback-url
 
-destroy: run-command-tf-init run-command-stop-pipeline run-command-tf-plan-destroy run-command-tf-destroy
+destroy: run-command-tf-init run-command-tf-plan-destroy run-command-tf-destroy run-command-stop-pipeline

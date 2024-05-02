@@ -2,6 +2,10 @@
 .vscode
 .idea
 
+# Web-player
+/harvest/web-player/src/config.json
+/harvest/web-player/package-lock.json
+
 # Terraform
 lambda_zip_dir
 lambda_zip_file.zip

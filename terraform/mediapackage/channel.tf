@@ -3,10 +3,14 @@ locals {
     Mediapackage = {
       Type = "AWS::MediaPackage::OriginEndpoint"
       Properties = {
-        Id        = "${var.prefix}-hls"
-        ChannelId = aws_media_package_channel.channel.id
+        Id                     = "${var.prefix}-hls"
+        ChannelId              = aws_media_package_channel.channel.id
+        StartoverWindowSeconds = var.start_over_seconds
         HlsPackage = {
-          PlaylistType = "EVENT"
+          PlaylistType          = "EVENT"
+          AdTriggers            = ["SPLICE_INSERT"]
+          AdMarkers             = "DATERANGE"
+          PlaylistWindowSeconds = var.playlist_window_seconds
         }
       }
     }

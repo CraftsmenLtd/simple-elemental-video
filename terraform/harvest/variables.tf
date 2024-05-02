@@ -23,7 +23,18 @@ variable "mediapackage_channel_id" {
   description = "AWS mediapackage channel ID"
 }
 
+variable "mediapackage_channel_arn" {
+  type        = string
+  description = "AWS mediapackage channel ID"
+}
+
+
 variable "medialive_channel_id" {
   type        = string
   description = "AWS Medialive channel ID"
+}
+
+variable "api_gateway_invoke_url" {
+  type        = string
+  description = "API Gateway invoke url"
 }

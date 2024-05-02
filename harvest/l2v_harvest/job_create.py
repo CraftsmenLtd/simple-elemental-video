@@ -4,10 +4,12 @@ from http import HTTPStatus
 
 import boto3
 from botocore.exceptions import ClientError
-from pydantic import ValidationError
 
-from .schemas import HarvestJob
-from .utils import create_response
+from constants import START_MARKER, END_MARKER
+from marker import get_markers
+from lambda_env import LambdaEnv
+from schemas import HarvestJob
+from utils import create_response
 
 
 def handle_create_harvest_job(event) -> dict:
@@ -39,7 +41,7 @@ def handle_create_harvest_job(event) -> dict:
 
     try:
         harvest_job = HarvestJob(**payload)
-    except ValidationError:
+    except Exception:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
             body={"error": "Invalid request payload."}
@@ -56,6 +58,23 @@ def handle_create_harvest_job(event) -> dict:
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             body={"error": f"Error creating harvest job: {str(e)}"}
         )
+
+
+def create_harvest_job_from_manifest(lambda_environment: LambdaEnv):
+    markers = get_markers(lambda_environment.mediapackage_hls_endpoint)
+    start_time = markers.get(START_MARKER)
+    end_time = markers.get(END_MARKER)
+    if start_time and end_time:
+        job_id = uuid.uuid4()
+        payload = {
+            "job_id": job_id,
+            "origin_endpoint_id": lambda_environment.mediapackage_hls_endpoint,
+            "start_time": start_time,
+            "end_time": end_time,
+            "s3_destination": f"s3://{lambda_environment.harvest_bucket_name}/{job_id}"
+        }
+        harvest_job = HarvestJob(**payload)
+        return _create_mediapackage_harvest_job(harvest_job)
 
 
 def _create_mediapackage_harvest_job(harvest_job: HarvestJob):

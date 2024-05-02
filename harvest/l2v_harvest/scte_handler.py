@@ -1,15 +1,17 @@
 import json
 from http import HTTPStatus
 
-from pydantic import ValidationError
 from botocore.exceptions import ClientError
-from .aws_utils.medialive import MedialiveHelper
-from .lambda_env import LambdaEnv
-from .schemas import ScteMarker
-from .utils import create_response
+
+from aws_utils.medialive import MedialiveHelper
+from constants import END_MARKER
+from job_create import create_harvest_job_from_manifest
+from lambda_env import LambdaEnv
+from schemas import ScteMarker
+from utils import create_response
 
 
-def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
+def handle_send_scte_marker(event_body, lambda_environment: LambdaEnv) -> dict:
     """Send scte marker to medialive channel
 
     Parameters:
@@ -21,7 +23,7 @@ def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
         and response body.
     """
     try:
-        payload = json.loads(event["body"])
+        payload = event_body
     except KeyError:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
@@ -35,7 +37,7 @@ def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
 
     try:
         scte_marker = ScteMarker(**payload)
-    except ValidationError:
+    except Exception:
         return create_response(
             status_code=HTTPStatus.BAD_REQUEST,
             body={"error": "Invalid request payload."}
@@ -43,9 +45,14 @@ def handle_send_scte_marker(event, lambda_environment: LambdaEnv) -> dict:
 
     try:
         medialive_helper = MedialiveHelper()
+        medialive_helper.set_up()
         medialive_helper.send_scte_marker(lambda_environment.medialive_channel_id,
                                           scte_marker.scte_marker_id,
-                                          scte_marker.ad_duration_in_sec)
+                                          int(scte_marker.ad_duration_in_sec))
+
+        if payload["scte_marker_id"] == END_MARKER:
+            create_harvest_job_from_manifest(lambda_environment)
+
         return create_response(
             status_code=HTTPStatus.OK,
             body={"message": "Scte marker sent"}

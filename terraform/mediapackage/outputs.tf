@@ -5,3 +5,7 @@ output "hls_origin_endpoint" {
 output "channel_id" {
   value = aws_media_package_channel.channel.id
 }
+
+output "channel_arn" {
+  value = aws_media_package_channel.channel.arn
+}

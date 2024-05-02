@@ -14,8 +14,10 @@ module "medialive" {
 }
 
 module "mediapackage" {
-  source = "./mediapackage"
-  prefix = var.prefix
+  source                  = "./mediapackage"
+  prefix                  = var.prefix
+  start_over_seconds      = 3600
+  playlist_window_seconds = 300
 }
 
 module "api-gateway" {
@@ -24,6 +26,8 @@ module "api-gateway" {
   api_stage = var.prefix
 }
 
+data "aws_region" "current" {}
+
 module "harvest" {
   source                    = "./harvest"
   prefix                    = var.prefix
@@ -31,7 +35,9 @@ module "harvest" {
   api_gw_root_resource_id   = module.api-gateway.api_gw_root_resource_id
   medialive_channel_id      = module.medialive.channel_id
   mediapackage_channel_id   = module.mediapackage.channel_id
+  mediapackage_channel_arn  = module.mediapackage.channel_arn
   mediapackage_hls_endpoint = module.mediapackage.hls_origin_endpoint
+  api_gateway_invoke_url    = "https://${module.api-gateway.api_gw_rest_api_id}.execute-api.${data.aws_region.current.name}.amazonaws.com/${module.api-gateway.api_gateway_stage}"
 }
 
 resource "aws_api_gateway_deployment" "api_deployment" {

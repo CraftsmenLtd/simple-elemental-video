@@ -21,11 +21,43 @@ data "aws_iam_policy_document" "lambda_common_policy" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:DescribeLogStreams"
+      "logs:DescribeLogStreams",
+      "medialive:BatchUpdateSchedule"
     ]
 
     resources = [
-      "arn:aws:logs:*:*:*"
+      "arn:aws:logs:*:*:*",
+      "arn:aws:medialive:*:*:channel:*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "harvest_lambda_policy" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.lambda_common_policy.json
+  ]
+
+  statement {
+    sid = "HarvestS3Policy"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.harvest_bucket.arn,
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
+    ]
+  }
+
+  statement {
+    sid = "MpHarvestPolicy"
+    actions = [
+      "mediapackage:*"
+    ]
+
+    resources = [
+      var.mediapackage_channel_arn
     ]
   }
 }
@@ -44,7 +76,7 @@ data "aws_iam_policy_document" "harvest_assume_role_policy" {
   }
 }
 
-data "aws_iam_policy_document" "harvest_policy" {
+data "aws_iam_policy_document" "harvest_job_policy" {
   version = "2012-10-17"
 
   statement {
@@ -52,11 +84,49 @@ data "aws_iam_policy_document" "harvest_policy" {
     actions = [
       "s3:ListBucket",
       "s3:GetBucketLocation",
+      "s3:GetBucketRequestPayment",
       "s3:PutObject"
     ]
 
     resources = [
-      aws_s3_bucket.harvest_bucket.arn
+      aws_s3_bucket.harvest_bucket.arn,
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "harvest_bucket_policy" {
+  version = "2012-10-17"
+
+  statement {
+    sid    = "PublicRead"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.harvest_bucket.arn}/*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "harvest_web_player_bucket_cloudfront_policy" {
+  statement {
+    sid = "PublicRead"
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.web_player_access.iam_arn]
+    }
+    actions = [
+      "s3:GetObject"
+    ]
+    effect = "Allow"
+    resources = [
+      "${aws_s3_bucket.harvest_web_player_bucket.arn}/*"
     ]
   }
 }

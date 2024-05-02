@@ -4,14 +4,17 @@ locals {
   lambda_options = {
     l2v-harvest = {
       name             = "l2v-harvest"
-      policy           = data.aws_iam_policy_document.lambda_common_policy
+      policy           = data.aws_iam_policy_document.harvest_lambda_policy
       source_directory = "${path.module}/../../harvest/l2v_harvest"
       handler          = "handler.handler"
+      timeout          = 300
       env_variables = {
         harvest_role_arn          = aws_iam_role.harvest_role.arn
         mediapackage_hls_endpoint = var.mediapackage_hls_endpoint
         mediapackage_channel_id   = var.mediapackage_channel_id
         medialive_channel_id      = var.medialive_channel_id
+        harvest_bucket_name       = aws_s3_bucket.harvest_bucket.id
+        vod_bucket_domain_name    = aws_s3_bucket.harvest_bucket.bucket_domain_name
       }
     }
   }
@@ -42,7 +45,7 @@ resource "aws_lambda_function" "lambda_functions" {
   runtime          = local.lambda_runtime
   timeout          = lookup(each.value, "timeout", 60)
   memory_size      = lookup(each.value, "memory_size", 128)
-  architectures    = ["arm64"]
+  architectures    = ["x86_64"]
   layers           = [module.lambda_layer.layer_arn]
 
   environment {
