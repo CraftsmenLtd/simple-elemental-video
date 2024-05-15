@@ -4,6 +4,7 @@ module "harvest_api" {
 
   default_stage_access_log_destination_arn = aws_cloudwatch_log_group.apigateway_logs.arn
   create_default_stage                     = false
+  create_api_domain_name = false
   description                              = "Harvest API"
   name                                     = "${var.prefix}-http-api"
   protocol_type                            = "HTTP"
@@ -47,7 +48,7 @@ module "harvest_api" {
     }
   }
 
-  depends_on = aws_lambda_function.lambda_functions
+  depends_on = [aws_lambda_function.lambda_functions]
 }
 
 resource "aws_lambda_permission" "vod_qc_api_health_lambda_execution_permission" {

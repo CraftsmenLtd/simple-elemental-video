@@ -50,7 +50,7 @@ resource "null_resource" "run_web_player_build_script" {
   provisioner "local-exec" {
     command = "harvest/web-player/build_web_player.sh"
     environment = {
-      harvest_api_url = module.harvest_api
+      harvest_api_url = module.harvest_api.apigatewayv2_api_api_endpoint
     }
   }
 
